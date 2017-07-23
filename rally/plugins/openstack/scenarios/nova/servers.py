@@ -1147,48 +1147,6 @@ class BootAndGetConsoleUrl(utils.NovaScenario):
                flavor={"type": "nova_flavor"})
 @validation.add("image_valid_on_flavor", flavor_param="flavor",
                 image_param="image", validate_disk=False)
-@validation.add("required_services", services=[consts.Service.NOVA,
-                                               consts.Service.CINDER])
-@validation.add("required_platform", platform="openstack", users=True)
-@scenario.configure(context={"cleanup": ["nova", "cinder"]},
-                    name="NovaServers.boot_server_from_volume_start_stop_start_suspend_resume_delete")
-class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
-                                    cinder_utils.CinderBasic):
-
-    def run(self, image, flavor, volume_size, volume_type=None,
-            min_sleep=0, max_sleep=0, force_delete=False, **kwargs):
-        """
-	ge0rgi: custom scenario
-	1.Boot server from volume
-	2.Shut down server
-	3.Start server
-	4.Suspend server
-	5.Resume server
-	6.Delete server
-
-        :param image: image to be used to boot an instance
-        :param flavor: flavor to be used to boot an instance
-        :param volume_size: volume size (in GB)
-        :param volume_type: specifies volume type when there are
-                            multiple backends
-        :param min_sleep: Minimum sleep time in seconds (non-negative)
-        :param max_sleep: Maximum sleep time in seconds (non-negative)
-        :param force_delete: True if force_delete should be used
-        :param kwargs: Optional additional arguments for server creation
-        """
-        volume = self.cinder.create_volume(volume_size, imageRef=image,
-                                           volume_type=volume_type)
-        block_device_mapping = {"vda": "%s:::1" % volume.id}
-        server = self._boot_server(None, flavor,
-                                   block_device_mapping=block_device_mapping,
-                                   **kwargs)
-	self._stop_server(server)
-	self._start_server(server)
-        self.sleep_between(min_sleep, max_sleep)
-	self._suspend_server(server)
-        self._resume_server(server)
-        self._delete_server(server, force=force_delete)
-
 
 @types.convert(image={"type": "glance_image"},
                flavor={"type": "nova_flavor"})
@@ -1226,7 +1184,6 @@ class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
         server = self._boot_server(None, flavor, block_device_mapping=block_device_mapping, **kwargs)
 	self._stop_server(server)
 	self._start_server(server)
-        self.sleep_between(min_sleep, max_sleep)
 	self._suspend_server(server)
         self._resume_server(server)
         self._delete_server(server, force=force_delete)
@@ -1261,7 +1218,6 @@ class BootServerShutOffStartSuspendResumeAndDelete(utils.NovaScenario):
         server = self._boot_server(image, flavor, **kwargs)
 	self._stop_server(server)
 	self._start_server(server)
-        self.sleep_between(min_sleep, max_sleep)
 	self._suspend_server(server)
         self._resume_server(server)
         self._delete_server(server, force=force_delete)
