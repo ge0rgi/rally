@@ -1243,8 +1243,7 @@ class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
                     name="NovaServers.custom_no_volume")
 class BootServerShutOffStartSuspendResumeAndDelete(utils.NovaScenario):
 
-    def run(self, image, flavor, volume_size, volume_type=None,
-            force_delete=False, **kwargs):
+    def run(self, image, flavor, force_delete=False, **kwargs):
         """
 	ge0rgi: custom scenario
 	1.Boot server
