@@ -1181,7 +1181,7 @@ class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
         """
         volume_metadata = {}
         if add_trust_meta:
-          volume_metdata = {"trust": "trusted"} 
+          volume_metadata = {"trust": "trusted"} 
         volume = self.cinder.create_volume(volume_size, imageRef=image,volume_type=volume_type, metadata=volume_metadata)
         block_device_mapping = {"vda": "%s:::1" % volume.id}
         server = self._boot_server(None, flavor, block_device_mapping=block_device_mapping, **kwargs)
