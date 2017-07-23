@@ -1161,7 +1161,7 @@ class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
                                     cinder_utils.CinderBasic):
 
     def run(self, image, flavor, volume_size, volume_type=None,
-            force_delete=False, **kwargs):
+            force_delete=False, add_trust_meta=False, **kwargs):
         """
 	ge0rgi: custom scenario
 	1.Boot server from volume
@@ -1179,7 +1179,10 @@ class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
         :param force_delete: True if force_delete should be used
         :param kwargs: Optional additional arguments for server creation
         """
-        volume = self.cinder.create_volume(volume_size, imageRef=image,volume_type=volume_type)
+        volume_metadata = {}
+        if add_trust_meta:
+          volume_metdata = {"trust": "trusted"} 
+        volume = self.cinder.create_volume(volume_size, imageRef=image,volume_type=volume_type, metadata=volume_metadata)
         block_device_mapping = {"vda": "%s:::1" % volume.id}
         server = self._boot_server(None, flavor, block_device_mapping=block_device_mapping, **kwargs)
 	self._stop_server(server)
