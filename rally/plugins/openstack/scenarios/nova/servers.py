@@ -1170,6 +1170,7 @@ class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
 	4.Suspend server
 	5.Resume server
 	6.Delete server
+	7.Delete volume
 
         :param image: image to be used to boot an instance
         :param flavor: flavor to be used to boot an instance
@@ -1190,7 +1191,8 @@ class BootServerFromVolumeShutOffStartSuspendResumeAndDelete(utils.NovaScenario,
 	self._suspend_server(server)
         self._resume_server(server)
         self._delete_server(server, force=force_delete)
-
+	volume.delete()
+	
 
 
 @types.convert(image={"type": "glance_image"},
