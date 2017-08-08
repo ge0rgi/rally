@@ -1,0 +1,21 @@
+{
+  "NovaServers.custom_with_volume": [
+    {
+      "args": {
+        "flavor": {
+          "name": "cirros64"
+        }, 
+        "force_delete": false,
+        "volume_size": 1, 
+        "add_trust_meta":true,
+        "image": {
+          "name": "cirros-0.3.4-x86_64-uec"
+        }
+      }, 
+      "runner": {
+        "times": 52, 
+        "type": "serial"
+      }
+    }
+  ]
+}
